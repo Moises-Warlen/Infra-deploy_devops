@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15.2
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+    ports:
+      - "5433:5432"
+    volumes:
+      -  /var/lib/docker/volumes/postgres15/_data:/var/lib/postgresql/data
+    networks:
+      - projetos
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: PsqProdl123#@!
+      POSTGRES_DB: postgres
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0'
+          memory: 256M
+        reservations:
+          cpus: '0'
+          memory: 128M
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+
+volumes:
+  postgres15_2_data:
+    external: true
+
+networks:
+  projetos:
+    external: true
